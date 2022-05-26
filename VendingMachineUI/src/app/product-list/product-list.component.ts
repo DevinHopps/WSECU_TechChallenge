@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClientModule, HttpClient } from  "@angular/common/http";
+import { Product } from '../products';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { products } from '../products';
 
 @Component({
   selector: 'app-product-list',
@@ -8,16 +11,14 @@ import { products } from '../products';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent {
-  products = products;
 
-  share() {
-    window.alert('The product has been shared!');
-  }
+  constructor(private  httpClient:HttpClient) {
+ }
+
+getProducts() : Observable<Product[]> {
+  return this.httpClient.get<Product[]>("https://localhost:44375/product").pipe(map(res => {return res.map(item => {return item as Product}) }));
+
 }
+  
 
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at https://angular.io/license
-*/
+}
